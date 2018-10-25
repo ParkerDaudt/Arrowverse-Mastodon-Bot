@@ -1,0 +1,19 @@
+{
+  "name": "npm_demp",
+  "version": "1.0.0",
+  "description": "Demo npm",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bot"
+  ],
+  "author": "Parker Daudt",
+  "license": "ISC",
+  "dependencies": {
+    "npm": "^6.4.1",
+    "mastodon-api": "^1.3.0",
+    "twit": "^2.2.11"
+  }
+}

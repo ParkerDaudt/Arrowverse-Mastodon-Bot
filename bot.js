@@ -5,14 +5,16 @@ var tweet_content;
 var Twit = require('twit');
 
 const mastodon = require('mastodon-api'); 
+const ENV = require('dotenv');
+ENV.config();
 
 var config = require('./config');
 var T = new Twit(config);
 
 var M = new mastodon({
-	client_key: ' 73665993e6020bcc030e04ab19aaf787390f8db9d2d5712d90a19ac869abb6b3 ',
-	client_secret: 'e729a5aebda4ba7f1d2255dc99b1ecfa4aca58bf84294c14310b30f2efcf7881',
-	access_token: 'fdc0cc0ebc89f37c04cbc471fd59799236c0d664f1b509daa6ae716875ddd191',
+	client_key: process.env.CLIENT_KEY,
+	client_secret: process.env.CLIENT_SECRET,
+	access_token: process.env.ACCESS_TOKEN,
 	timeout_ms: 60*1000,
 	api_url: 'https://botsin.space/api/v1/',
 })
@@ -28,24 +30,29 @@ function tweetEvent(tweet){
 	var fs = require('fs');
 	var json = JSON.stringify(tweet, null, 2);
 	fs.writeFile("tweet.json", json);
-	console.log(tweet)
-	
-	if(tweet.retweeted_status){
-		console.log('Retweet')
-	}
-	else if(tweet.truncated == false){
-		console.log(tweet.truncated)
-		console.log('Extended')
-		tweet_content = 'From ' + tweet.user.name + ':' + tweet.text
-		MastaPost()
-	}
-	else if(tweet.truncated == true){
-		console.log(tweet.truncated);
-		console.log(tweet.extended_tweet.full_text)
-		console.log('Normal')
-		tweet_content = 'From ' + tweet.user.name + ':' + tweet.extended_tweet.full_text + " #Arrowverse #TheCW"
-		MastaPost();
+	//console.log(tweet)
+	if(tweet.user.screen_name == "TheCWSupergirl" || tweet.user.screen_name == "CW_TheFlash" || tweet.user.screen_name == "blacklightning" || tweet.user.screen_name == "CW_Arrow" || tweet.user.screen_name == "TheCW_Legends"){
+		
+		if(tweet.retweeted_status){
+			console.log('Retweet')
 		}
+		else if(tweet.truncated == false){
+			console.log(tweet.truncated)
+			console.log('Extended')
+			tweet_content = 'From ' + tweet.user.name + ':' + tweet.text
+			MastaPost()
+		}
+		else if(tweet.truncated == true){
+			console.log(tweet.truncated);
+			console.log(tweet.extended_tweet.full_text)
+			console.log('Normal')
+			tweet_content = 'From ' + tweet.user.name + ':' + tweet.extended_tweet.full_text + " #Arrowverse #TheCW"
+			MastaPost();
+			}
+	}
+	else{
+		console.log('Not Valid')
+	}
 }
 
 

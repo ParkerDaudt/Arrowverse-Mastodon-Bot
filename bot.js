@@ -50,9 +50,9 @@ function tweetEvent(tweet){
 			MastaPost();
 			}
 	}
-	else{
-		console.log('Not Valid')
-	}
+	//else{
+		//console.log('Not Valid')
+	//}
 }
 
 

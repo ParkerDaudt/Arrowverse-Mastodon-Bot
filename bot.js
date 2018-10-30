@@ -27,9 +27,9 @@ var stream = T.stream('statuses/filter', { follow: [2282671736, 1244325504, 3241
 stream.on('tweet', tweetEvent); 
 
 function tweetEvent(tweet){
-	var fs = require('fs');
-	var json = JSON.stringify(tweet, null, 2);
-	fs.writeFile("tweet.json", json);
+	//var fs = require('fs');
+	//var json = JSON.stringify(tweet, null, 2);
+	//fs.writeFile("tweet.json", json);
 	//console.log(tweet)
 	if(tweet.user.screen_name == "TheCWSupergirl" || tweet.user.screen_name == "CW_TheFlash" || tweet.user.screen_name == "blacklightning" || tweet.user.screen_name == "CW_Arrow" || tweet.user.screen_name == "TheCW_Legends"){
 		

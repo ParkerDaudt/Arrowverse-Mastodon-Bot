@@ -39,20 +39,20 @@ function tweetEvent(tweet){
 		else if(tweet.truncated == false){
 			console.log(tweet.truncated)
 			console.log('Extended')
-			tweet_content = 'From ' + tweet.user.name + ':' + tweet.text
+			tweet_content = 'From ' + tweet.user.name + ': ' + tweet.text
 			MastaPost()
 		}
 		else if(tweet.truncated == true){
 			console.log(tweet.truncated);
 			console.log(tweet.extended_tweet.full_text)
 			console.log('Normal')
-			tweet_content = 'From ' + tweet.user.name + ':' + tweet.extended_tweet.full_text + " #Arrowverse #TheCW"
+			tweet_content = 'From ' + tweet.user.name + ': ' + tweet.extended_tweet.full_text + " #Arrowverse #TheCW"
 			MastaPost();
 			}
 	}
-	//else{
-		//console.log('Not Valid')
-	//}
+	else{
+		console.log('Not Valid')
+	}
 }
 
 

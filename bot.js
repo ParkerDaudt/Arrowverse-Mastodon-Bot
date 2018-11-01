@@ -39,7 +39,7 @@ function tweetEvent(tweet){
 		else if(tweet.truncated == false){
 			console.log(tweet.truncated)
 			console.log('Extended')
-			tweet_content = 'From ' + tweet.user.name + ': ' + tweet.text
+			tweet_content = 'From ' + tweet.user.name + ': ' + tweet.text + " #Arrowverse #TheCW"
 			MastaPost()
 		}
 		else if(tweet.truncated == true){

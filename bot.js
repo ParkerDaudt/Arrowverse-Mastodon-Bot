@@ -1,16 +1,8 @@
 console.log('Twitter Bot Is Starting');
 
-var tweet_content;
-
-var Twit = require('twit');
-
-const mastodon = require('mastodon-api'); 
+const mastodon = require('mastodon-api');
 const ENV = require('dotenv');
 ENV.config();
-
-var config = require('./config');
-var T = new Twit(config);
-
 var M = new mastodon({
 	client_key: process.env.CLIENT_KEY,
 	client_secret: process.env.CLIENT_SECRET,
@@ -19,45 +11,59 @@ var M = new mastodon({
 	api_url: 'https://botsin.space/api/v1/',
 })
 
+var tweet_content;
+var Twit = require('twit');
+var config = require('./config');
+var T = new Twit(config);
 
-var stream = T.stream('statuses/filter', { follow: [2282671736, 1244325504, 3241065977,  	
+var stream = T.stream('statuses/filter', { follow: [2282671736, 1244325504, 3241065977,
 
 828640738065805312, 2820666877]})
 
-stream.on('tweet', tweetEvent); 
+stream.on('tweet', tweetEvent);
 
-function tweetEvent(tweet){
-	//var fs = require('fs');
-	//var json = JSON.stringify(tweet, null, 2);
-	//fs.writeFile("tweet.json", json);
-	//console.log(tweet)
-	if(tweet.user.screen_name == "TheCWSupergirl" || tweet.user.screen_name == "CW_TheFlash" || tweet.user.screen_name == "blacklightning" || tweet.user.screen_name == "CW_Arrow" || tweet.user.screen_name == "TheCW_Legends"){
-		
-		if(tweet.retweeted_status){
+function tweetEvent(eventMsg){ // Follows Twitter feeds from specified accounts
+	if(eventMsg.user.screen_name == "TheCWSupergirl" || eventMsg.user.screen_name == "CW_TheFlash" || eventMsg.user.screen_name == "blacklightning" || eventMsg.user.screen_name == "CW_Arrow" || eventMsg.user.screen_name == "TheCW_Legends"){
+		if(eventMsg.retweeted_status){
 			console.log('Retweet')
 		}
-		else if(tweet.truncated == false){
-			console.log(tweet.truncated)
-			console.log('Extended')
-			tweet_content = 'From ' + tweet.user.name + ': ' + tweet.text + " #Arrowverse #TheCW"
+		else if(eventMsg.truncated == false){
+			console.log(eventMsg.truncated)
+			console.log('Not Truncated')
 			MastaPost()
 		}
-		else if(tweet.truncated == true){
-			console.log(tweet.truncated);
-			console.log(tweet.extended_tweet.full_text)
-			console.log('Normal')
-			tweet_content = 'From ' + tweet.user.name + ': ' + tweet.extended_tweet.full_text + " #Arrowverse #TheCW"
+		else if(eventMsg.truncated == true){
+			console.log(eventMsg.truncated);
+			console.log(eventMsg.extended_eventMsg.full_text)
+			console.log('Truncated')
+			tweet_content = 'From ' + eventMsg.user.name + ': ' + eventMsg.extended_eventMsg.full_text + " #Arrowverse #TheCW"
 			MastaPost();
 			}
 	}
-	//else{
-		//console.log('Not Valid')
-	//}
 }
 
+function MastaPost() { // Posts (Toots) to botsin.space
 
-function GetTweet() {
-		
+	var mastaparams ={
+		status: tweet_content
+	}
+
+	console.log(tweet_content);
+	M.post('statuses', mastaparams, (error, mdata) => {
+		if(error) {
+			console.error(error);
+		}
+		else{
+			console.log(tweet_content)
+			console.log(mdata)
+			console.log('Toot!')
+		}
+	})
+}
+
+/*
+function GetTweet() { // Retrieves an individual or list of tweets via search function
+
 	var twitterparams = {
 		q: '-RT from:CW_TheFlash',
 		tweet_mode: 'extended',
@@ -87,9 +93,7 @@ function GetTweet() {
 	}
 }
 
-function TweetIt() {
-
-	//var r = Math.floor(Math.random()*100);
+function TweetIt() { // Posts tweets to twitter
 		var tweet = {
 		status: tweet_content
 	}
@@ -106,27 +110,4 @@ function TweetIt() {
 	}
 }
 
-
-function MastaPost() {
-
-	var mastaparams ={
-		status: tweet_content
-	}
-	
-	console.log(tweet_content);
-	M.post('statuses', mastaparams, (error, mdata) => {
-	if(error) {
-		console.error(error);
-	}
-	else{
-		console.log(tweet_content)
-		console.log(mdata)
-		console.log('Toot!')
-	}
-})
-}
-
-
-//setInterval(GetTweet, 1000*5)
-//setInterval(MastaPost, 1000*6)
-
+*/

@@ -30,6 +30,7 @@ function tweetEvent(eventMsg){ // Follows Twitter feeds from specified accounts
 		else if(eventMsg.truncated == false){
 			console.log(eventMsg.truncated)
 			console.log('Not Truncated')
+			tweet_content = 'From ' + eventMsg.user.name + ': ' + eventMsg.text + " #Arrowverse #TheCW"
 			MastaPost()
 		}
 		else if(eventMsg.truncated == true){

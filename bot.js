@@ -7,8 +7,8 @@ var M = new mastodon({
 	client_key: process.env.CLIENT_KEY,
 	client_secret: process.env.CLIENT_SECRET,
 	access_token: process.env.ACCESS_TOKEN,
-	timeout_ms: 60*1000,
-	api_url: 'https://botsin.space/api/v1/',
+	timeout_ms: process.env.TIMEOUT_MS,
+	api_url: process.env.API_URL
 })
 
 var tweet_content;
